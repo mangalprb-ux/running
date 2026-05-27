@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Run Plan">
+<title>Mangal — Korum 10K Plan</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f2f2f0;color:#1a1a1a;padding-bottom:60px;}
+.topbar{background:#fff;border-bottom:1px solid #e0e0d8;padding:14px 16px 10px;position:sticky;top:0;z-index:200;}
+.topbar h1{font-size:17px;font-weight:700;}
+.topbar p{font-size:12px;color:#999;margin-top:2px;}
+.banner{margin:12px 16px 0;background:#fff4ee;border:1px solid #f5a070;border-radius:16px;padding:12px 16px;display:flex;align-items:center;gap:12px;}
+.banner .ico{font-size:30px;}
+.banner .bt{font-size:14px;font-weight:700;color:#b83000;}
+.banner .bs{font-size:11px;color:#d04010;margin-top:2px;}
+.banner .bc{font-size:20px;font-weight:800;color:#b83000;margin-top:4px;}
+.prog-card{margin:12px 16px 0;background:#fff;border-radius:14px;border:1px solid #e0e0d8;padding:14px;}
+.prog-card h3{font-size:13px;font-weight:600;margin-bottom:8px;}
+.pbg{height:8px;background:#eee;border-radius:4px;}
+.pfg{height:8px;border-radius:4px;background:#1d9e75;width:0%;transition:width .4s;}
+.plbl{display:flex;justify-content:space-between;font-size:11px;color:#999;margin-top:4px;}
+.tabs{display:flex;gap:6px;padding:12px 16px;overflow-x:auto;background:#f2f2f0;position:sticky;top:62px;z-index:100;-webkit-overflow-scrolling:touch;}
+.tabs::-webkit-scrollbar{display:none;}
+.tbtn{font-size:12px;font-weight:600;padding:7px 14px;border-radius:20px;border:1.5px solid #ddd;background:#fff;color:#888;cursor:pointer;white-space:nowrap;flex-shrink:0;-webkit-tap-highlight-color:transparent;}
+.tbtn.on{background:#1d9e75;color:#fff;border-color:#1d9e75;}
+.wpanel{display:none;padding:0 16px;}
+.wpanel.show{display:block;}
+.wsum{background:#fff;border-radius:14px;border:1px solid #e0e0d8;padding:14px;margin:10px 0;}
+.wsum h2{font-size:15px;font-weight:700;margin-bottom:10px;}
+.sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.sbox{background:#f7f7f3;border-radius:10px;padding:10px 6px;text-align:center;}
+.snum{font-size:20px;font-weight:800;}
+.slbl{font-size:10px;color:#999;margin-top:2px;}
+.dcard{background:#fff;border:1px solid #e0e0d8;border-radius:14px;margin-bottom:8px;overflow:hidden;}
+.dcard.racecard{border:2px solid #f5a070;background:#fffaf7;}
+.dhdr{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;cursor:pointer;-webkit-tap-highlight-color:transparent;user-select:none;}
+.dleft{display:flex;align-items:center;gap:10px;}
+.dot{width:11px;height:11px;border-radius:50%;flex-shrink:0;}
+.de{background:#378ADD;}.dl{background:#7F77DD;}.dt{background:#3B6D11;}.dr{background:#bbb;}.drc{background:#D85A30;}
+.dname{font-size:13px;font-weight:700;}
+.dsub{font-size:11px;color:#999;margin-top:1px;}
+.dright{display:flex;align-items:center;gap:8px;}
+.chip{font-size:12px;font-weight:600;padding:3px 10px;border-radius:12px;}
+.ce{background:#deeefb;color:#185fa5;}.cl{background:#eeedfe;color:#3c3489;}.ct{background:#e5f2d5;color:#27500a;}.cr{background:#efefeb;color:#666;}.crc{background:#fce8dd;color:#712b13;}
+.chv{font-size:16px;color:#bbb;transition:transform .2s;display:inline-block;}
+.chv.open{transform:rotate(180deg);}
+.dbody{display:none;border-top:1px solid #f0f0e8;padding:12px 14px;}
+.dbody.open{display:block;}
+.dnote{font-size:12px;color:#888;font-style:italic;margin-bottom:10px;line-height:1.5;}
+.runbox{background:#f7f7f3;border-radius:10px;padding:10px 12px;margin-bottom:10px;}
+.rrow{display:flex;justify-content:space-between;margin-bottom:3px;}
+.rl{font-size:12px;color:#999;}
+.rv{font-size:12px;font-weight:700;}
+.mbg{height:4px;background:#e0e0d8;border-radius:2px;margin-top:8px;}
+.mfg{height:4px;border-radius:2px;}
+.markrow{display:flex;align-items:center;gap:8px;margin-top:10px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.markrow span{font-size:12px;color:#999;}
+.stitle{font-size:10px;font-weight:700;letter-spacing:.06em;color:#bbb;text-transform:uppercase;margin:12px 0 6px;}
+.exlist{display:flex;flex-direction:column;gap:7px;}
+.exrow{display:flex;align-items:flex-start;gap:10px;}
+.ck{width:22px;height:22px;border-radius:7px;border:1.5px solid #ddd;background:#fff;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;color:transparent;transition:all .15s;margin-top:1px;-webkit-tap-highlight-color:transparent;}
+.ck.done{background:#1d9e75;border-color:#1d9e75;color:#fff;}
+.ext{font-size:13px;color:#1a1a1a;line-height:1.45;flex:1;cursor:pointer;}
+.ext.done{text-decoration:line-through;color:#bbb;}
+.div{height:1px;background:#f0f0e8;margin:10px 0;}
+.rtbl{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:10px;}
+.rtbl th{text-align:left;color:#999;font-weight:600;padding:4px 4px;border-bottom:1px solid #f0f0e8;}
+.rtbl td{padding:6px 4px;border-bottom:1px solid #f7f7f3;color:#1a1a1a;}
+.rtbl td:first-child{font-weight:700;color:#b83000;}
+.rtbl td:nth-child(2){font-weight:700;}
+.foot{text-align:center;font-size:11px;color:#ccc;padding:20px 16px 0;}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <h1>🏃‍♀️ Korum 10K Training</h1>
+  <p>Mangal · 27 May – 28 Jun 2026</p>
+</div>
+
+<div class="banner">
+  <div class="ico">🏁</div>
+  <div>
+    <div class="bt">Korum 10K — 28 June 2026</div>
+    <div class="bs">Target: sub-90 min · Pace 8'50"–9'00"/km</div>
+    <div class="bc" id="cd">-- days to go</div>
+  </div>
+</div>
+
+<div class="prog-card">
+  <h3>Overall training progress</h3>
+  <div class="pbg"><div class="pfg" id="pfg"></div></div>
+  <div class="plbl"><span id="pdone">0 km logged</span><span id="ptot">of 142 km plan</span></div>
+</div>
+
+<div class="tabs" id="tabs">
+  <button class="tbtn on" onclick="sw(0,this)">W1 · 27 May</button>
+  <button class="tbtn" onclick="sw(1,this)">W2 · 1 Jun</button>
+  <button class="tbtn" onclick="sw(2,this)">W3 · 8 Jun</button>
+  <button class="tbtn" onclick="sw(3,this)">W4 · 15 Jun</button>
+  <button class="tbtn" onclick="sw(4,this)">W5 · 22 Jun</button>
+  <button class="tbtn" onclick="sw(5,this)">Race 🏁</button>
+</div>
+
+<!-- W1: Wed 27 May – Sun 31 May -->
+<div class="wpanel show" id="w0">
+<div class="wsum"><h2>Week 1 — Build · 27–31 May</h2>
+<div class="sgrid">
+<div class="sbox"><div class="snum">23</div><div class="slbl">target km</div></div>
+<div class="sbox"><div class="snum">3</div><div class="slbl">run days</div></div>
+<div class="sbox"><div class="snum">1</div><div class="slbl">strength day</div></div>
+</div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d00')">
+<div class="dleft"><div class="dot dr"></div><div><div class="dname">Wed 27 May</div><div class="dsub">Strength + Recovery</div></div></div>
+<div class="dright"><span class="chip cr">No run</span><span class="chv" id="cd00">▾</span></div></div>
+<div class="dbody" id="d00">
+<div class="dnote">First day of plan. Structural work only — build tendons and ligaments from day 1.</div>
+<div class="stitle">Strength circuit — 2 rounds</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Glute bridges × 20 (hold 2s at top)</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Single leg balance × 30s each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Wall sit × 40s</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hamstring curls lying down × 15 each</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Eccentric heel drops × 15 each (4 sec down slow)</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip abduction standing × 15 each side</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Dead bug × 10 each side</span></div>
+</div>
+<div class="div"></div>
+<div class="stitle">Bone loading</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">100 skips / small hops × 10 each leg</span></div>
+</div>
+</div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d01')">
+<div class="dleft"><div class="dot dr"></div><div><div class="dname">Thu 29 May</div><div class="dsub">Complete rest</div></div></div>
+<div class="dright"><span class="chip cr">Rest</span><span class="chv" id="cd01">▾</span></div></div>
+<div class="dbody" id="d01">
+<div class="dnote">Complete rest. Sleep by 10 PM. Eat well — extra protein today.</div>
+</div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d02')">
+<div class="dleft"><div class="dot de"></div><div><div class="dname">Fri 30 May</div><div class="dsub">Easy run</div></div></div>
+<div class="dright"><span class="chip ce">6 km</span><span class="chv" id="cd02">▾</span></div></div>
+<div class="dbody" id="d02">
+<div class="dnote">Cadence focus — count steps every 5 min, aim 153 spm. Keep effort fully conversational — full sentences throughout.</div>
+<div class="runbox">
+<div class="rrow"><span class="rl">Distance</span><span class="rv">6 km</span></div>
+<div class="rrow"><span class="rl">Pace</span><span class="rv">9'30"/km</span></div>
+<div class="mbg"><div class="mfg" style="width:50%;background:#378ADD;"></div></div>
+<div class="markrow" onclick="mr('m02',this)"><div class="ck" id="m02">✓</div><span>Mark run completed</span></div>
+</div>
+<div class="stitle">Pre-run warmup — 5 min</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Leg swings forward/back × 20 each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip circles × 10 each direction</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Calf raises × 15</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Isometric calf hold 45s each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Walking lunges × 10</span></div>
+</div>
+<div class="div"></div>
+<div class="stitle">Post-run recovery — 8 min</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hamstring stretch 3 × 30s each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip flexor stretch 3 × 30s each side</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Calf stretch against wall 2 × 30s</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Ice behind knees 15 min if any discomfort</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Ankle alphabet × 1 each foot</span></div>
+</div>
+</div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d03')">
+<div class="dleft"><div class="dot dl"></div><div><div class="dname">Sat 31 May</div><div class="dsub">Long run 🎯 First 10K!</div></div></div>
+<div class="dright"><span class="chip cl">10 km</span><span class="chv" id="cd03">▾</span></div></div>
+<div class="dbody" id="d03">
+<div class="dnote">First 10K goal run! Stay fully conversational throughout. Fuel at km 5 with dates/banana. Water at km 4 and km 7. Finish is the goal — do not push pace.</div>
+<div class="runbox">
+<div class="rrow"><span class="rl">Distance</span><span class="rv">10 km</span></div>
+<div class="rrow"><span class="rl">Pace</span><span class="rv">9'15"/km</span></div>
+<div class="mbg"><div class="mfg" style="width:83%;background:#7F77DD;"></div></div>
+<div class="markrow" onclick="mr('m03',this)"><div class="ck" id="m03">✓</div><span>Mark run completed</span></div>
+</div>
+<div class="stitle">Pre-run warmup — 5 min</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Leg swings forward/back × 20 each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip circles × 10 each direction</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Calf raises × 15</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Isometric calf hold 45s each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Walking lunges × 10</span></div>
+</div>
+<div class="div"></div>
+<div class="stitle">Post-run recovery — 8 min</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hamstring stretch 3 × 30s each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip flexor stretch 3 × 30s each side</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Calf stretch against wall 2 × 30s</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Ice behind knees 15 min if any discomfort</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Ankle alphabet × 1 each foot</span></div>
+</div>
+</div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d04')">
+<div class="dleft"><div class="dot dr"></div><div><div class="dname">Sun 1 Jun</div><div class="dsub">Complete rest</div></div></div>
+<div class="dright"><span class="chip cr">Rest</span><span class="chv" id="cd04">▾</span></div></div>
+<div class="dbody" id="d04">
+<div class="dnote">Complete rest. You ran 10K yesterday — celebrate and recover. Extra protein: eggs, curd, dal.</div>
+</div></div>
+</div>
+
+<!-- W2: Mon 1 Jun – Sun 7 Jun -->
+<div class="wpanel" id="w1">
+<div class="wsum"><h2>Week 2 — Build · 2–7 Jun</h2>
+<div class="sgrid">
+<div class="sbox"><div class="snum">26</div><div class="slbl">target km</div></div>
+<div class="sbox"><div class="snum">3</div><div class="slbl">run days</div></div>
+<div class="sbox"><div class="snum">2</div><div class="slbl">strength days</div></div>
+</div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d10')">
+<div class="dleft"><div class="dot dr"></div><div><div class="dname">Mon 2 Jun</div><div class="dsub">Strength day</div></div></div>
+<div class="dright"><span class="chip cr">No run</span><span class="chv" id="cd10">▾</span></div></div>
+<div class="dbody" id="d10">
+<div class="stitle">Strength circuit — 2 rounds</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Glute bridges × 20 (hold 2s at top)</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Single leg balance × 30s each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Wall sit × 40s</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hamstring curls lying down × 15 each</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Eccentric heel drops × 15 each (4 sec down)</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip abduction standing × 15 each side</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Dead bug × 10 each side</span></div>
+</div>
+<div class="div"></div>
+<div class="stitle">Bone loading</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">100 skips / small hops × 10 each leg</span></div>
+</div>
+</div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d11')">
+<div class="dleft"><div class="dot de"></div><div><div class="dname">Tue 3 Jun</div><div class="dsub">Easy run</div></div></div>
+<div class="dright"><span class="chip ce">6 km</span><span class="chv" id="cd11">▾</span></div></div>
+<div class="dbody" id="d11">
+<div class="dnote">Cadence target 154–156 spm. Fully conversational throughout.</div>
+<div class="runbox">
+<div class="rrow"><span class="rl">Distance</span><span class="rv">6 km</span></div>
+<div class="rrow"><span class="rl">Pace</span><span class="rv">9'20"/km</span></div>
+<div class="mbg"><div class="mfg" style="width:50%;background:#378ADD;"></div></div>
+<div class="markrow" onclick="mr('m11',this)"><div class="ck" id="m11">✓</div><span>Mark run completed</span></div>
+</div>
+<div class="stitle">Pre-run warmup — 5 min</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Leg swings forward/back × 20 each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip circles × 10 each direction</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Calf raises × 15</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Isometric calf hold 45s each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Walking lunges × 10</span></div>
+</div>
+<div class="div"></div>
+<div class="stitle">Post-run recovery — 8 min</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hamstring stretch 3 × 30s each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip flexor stretch 3 × 30s each side</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Calf stretch against wall 2 × 30s</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Ice behind knees 15 min if any discomfort</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Ankle alphabet × 1 each foot</span></div>
+</div>
+</div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d12')">
+<div class="dleft"><div class="dot dr"></div><div><div class="dname">Wed 4 Jun</div><div class="dsub">Rest</div></div></div>
+<div class="dright"><span class="chip cr">Rest</span><span class="chv" id="cd12">▾</span></div></div>
+<div class="dbody" id="d12"><div class="dnote">Complete rest. Sleep by 10 PM.</div></div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d13')">
+<div class="dleft"><div class="dot dt"></div><div><div class="dname">Thu 5 Jun</div><div class="dsub">Tempo run</div></div></div>
+<div class="dright"><span class="chip ct">7 km</span><span class="chv" id="cd13">▾</span></div></div>
+<div class="dbody" id="d13">
+<div class="dnote">10 min easy warmup jog → 3.5 km at 8'10"/km → 10 min cooldown. At tempo: 3–4 words only, not full sentences.</div>
+<div class="runbox">
+<div class="rrow"><span class="rl">Total distance</span><span class="rv">7 km</span></div>
+<div class="rrow"><span class="rl">Tempo pace</span><span class="rv">8'10"/km × 3.5 km</span></div>
+<div class="mbg"><div class="mfg" style="width:58%;background:#3B6D11;"></div></div>
+<div class="markrow" onclick="mr('m13',this)"><div class="ck" id="m13">✓</div><span>Mark run completed</span></div>
+</div>
+<div class="stitle">Pre-run warmup — 5 min</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Leg swings forward/back × 20 each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip circles × 10 each direction</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Calf raises × 15</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Isometric calf hold 45s each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Walking lunges × 10</span></div>
+</div>
+<div class="div"></div>
+<div class="stitle">Post-run recovery — 8 min</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hamstring stretch 3 × 30s each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip flexor stretch 3 × 30s each side</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Calf stretch against wall 2 × 30s</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Ice behind knees 15 min if any discomfort</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Ankle alphabet × 1 each foot</span></div>
+</div>
+</div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d14')">
+<div class="dleft"><div class="dot dr"></div><div><div class="dname">Fri 6 Jun</div><div class="dsub">Strength day</div></div></div>
+<div class="dright"><span class="chip cr">No run</span><span class="chv" id="cd14">▾</span></div></div>
+<div class="dbody" id="d14">
+<div class="stitle">Strength circuit — 2 rounds</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Glute bridges × 20</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Single leg balance × 30s each</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Wall sit × 40s</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hamstring curls × 15 each</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Eccentric heel drops × 15 each</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip abduction × 15 each</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Dead bug × 10 each side</span></div>
+</div>
+<div class="div"></div>
+<div class="stitle">Bone loading</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">100 skips / small hops × 10 each leg</span></div>
+</div>
+</div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d15')">
+<div class="dleft"><div class="dot dl"></div><div><div class="dname">Sat 7 Jun</div><div class="dsub">Long run</div></div></div>
+<div class="dright"><span class="chip cl">11 km</span><span class="chv" id="cd15">▾</span></div></div>
+<div class="dbody" id="d15">
+<div class="dnote">Monsoon may have started — midfoot landing on wet roads. Fuel at km 5 + km 8. Water every 3 km. Avoid painted road markings when wet.</div>
+<div class="runbox">
+<div class="rrow"><span class="rl">Distance</span><span class="rv">11 km</span></div>
+<div class="rrow"><span class="rl">Pace</span><span class="rv">9'10"/km</span></div>
+<div class="mbg"><div class="mfg" style="width:92%;background:#7F77DD;"></div></div>
+<div class="markrow" onclick="mr('m15',this)"><div class="ck" id="m15">✓</div><span>Mark run completed</span></div>
+</div>
+<div class="stitle">Pre-run warmup — 5 min</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Leg swings forward/back × 20 each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip circles × 10 each direction</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Calf raises × 15</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Isometric calf hold 45s each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Walking lunges × 10</span></div>
+</div>
+<div class="div"></div>
+<div class="stitle">Post-run recovery — 8 min</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hamstring stretch 3 × 30s each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip flexor stretch 3 × 30s each side</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Calf stretch against wall 2 × 30s</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Ice behind knees 15 min if any discomfort</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Ankle alphabet × 1 each foot</span></div>
+</div>
+</div></div>
+</div>
+
+<!-- W3: 8–14 Jun -->
+<div class="wpanel" id="w2">
+<div class="wsum"><h2>Week 3 — Build · 8–14 Jun</h2>
+<div class="sgrid">
+<div class="sbox"><div class="snum">29</div><div class="slbl">target km</div></div>
+<div class="sbox"><div class="snum">3</div><div class="slbl">run days</div></div>
+<div class="sbox"><div class="snum">2</div><div class="slbl">strength days</div></div>
+</div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d20')">
+<div class="dleft"><div class="dot dr"></div><div><div class="dname">Sun 8 Jun</div><div class="dsub">Rest</div></div></div>
+<div class="dright"><span class="chip cr">Rest</span><span class="chv" id="cd20">▾</span></div></div>
+<div class="dbody" id="d20"><div class="dnote">Complete rest after long run yesterday.</div></div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d21')">
+<div class="dleft"><div class="dot dr"></div><div><div class="dname">Mon 9 Jun</div><div class="dsub">Strength day</div></div></div>
+<div class="dright"><span class="chip cr">No run</span><span class="chv" id="cd21">▾</span></div></div>
+<div class="dbody" id="d21">
+<div class="stitle">Strength circuit — 2 rounds</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Glute bridges × 20</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Single leg balance × 30s each</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Wall sit × 40s</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hamstring curls × 15 each</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Eccentric heel drops × 15 each</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip abduction × 15 each</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Dead bug × 10 each side</span></div>
+</div>
+<div class="div"></div>
+<div class="stitle">Bone loading</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">100 skips / small hops × 10 each leg</span></div>
+</div>
+</div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d22')">
+<div class="dleft"><div class="dot de"></div><div><div class="dname">Tue 10 Jun</div><div class="dsub">Easy run</div></div></div>
+<div class="dright"><span class="chip ce">7 km</span><span class="chv" id="cd22">▾</span></div></div>
+<div class="dbody" id="d22">
+<div class="dnote">Cadence target 156–158 spm. Conversational effort throughout.</div>
+<div class="runbox">
+<div class="rrow"><span class="rl">Distance</span><span class="rv">7 km</span></div>
+<div class="rrow"><span class="rl">Pace</span><span class="rv">9'15"/km</span></div>
+<div class="mbg"><div class="mfg" style="width:58%;background:#378ADD;"></div></div>
+<div class="markrow" onclick="mr('m22',this)"><div class="ck" id="m22">✓</div><span>Mark run completed</span></div>
+</div>
+<div class="stitle">Pre-run warmup — 5 min</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Leg swings forward/back × 20 each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip circles × 10 each direction</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Calf raises × 15</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Isometric calf hold 45s each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Walking lunges × 10</span></div>
+</div>
+<div class="div"></div>
+<div class="stitle">Post-run recovery — 8 min</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hamstring stretch 3 × 30s each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip flexor stretch 3 × 30s each side</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Calf stretch against wall 2 × 30s</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Ice behind knees 15 min if any discomfort</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Ankle alphabet × 1 each foot</span></div>
+</div>
+</div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d23')">
+<div class="dleft"><div class="dot dt"></div><div><div class="dname">Thu 12 Jun</div><div class="dsub">Tempo run</div></div></div>
+<div class="dright"><span class="chip ct">7 km</span><span class="chv" id="cd23">▾</span></div></div>
+<div class="dbody" id="d23">
+<div class="dnote">10 min warmup → 4 km at 8'00"/km → 10 min cooldown. Hardest tempo yet.</div>
+<div class="runbox">
+<div class="rrow"><span class="rl">Total distance</span><span class="rv">7 km</span></div>
+<div class="rrow"><span class="rl">Tempo pace</span><span class="rv">8'00"/km × 4 km</span></div>
+<div class="mbg"><div class="mfg" style="width:58%;background:#3B6D11;"></div></div>
+<div class="markrow" onclick="mr('m23',this)"><div class="ck" id="m23">✓</div><span>Mark run completed</span></div>
+</div>
+<div class="stitle">Pre-run warmup — 5 min</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Leg swings forward/back × 20 each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip circles × 10 each direction</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Calf raises × 15</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Isometric calf hold 45s each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Walking lunges × 10</span></div>
+</div>
+<div class="div"></div>
+<div class="stitle">Post-run recovery — 8 min</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hamstring stretch 3 × 30s each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip flexor stretch 3 × 30s each side</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Calf stretch against wall 2 × 30s</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Ice behind knees 15 min if any discomfort</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Ankle alphabet × 1 each foot</span></div>
+</div>
+</div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d24')">
+<div class="dleft"><div class="dot dr"></div><div><div class="dname">Fri 13 Jun</div><div class="dsub">Strength day</div></div></div>
+<div class="dright"><span class="chip cr">No run</span><span class="chv" id="cd24">▾</span></div></div>
+<div class="dbody" id="d24">
+<div class="dnote">Strength + bone loading. Extra sleep tonight — peak long run tomorrow.</div>
+<div class="stitle">Strength circuit — 2 rounds</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Glute bridges × 20</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Single leg balance × 30s each</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Wall sit × 40s</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hamstring curls × 15 each</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Eccentric heel drops × 15 each</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip abduction × 15 each</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Dead bug × 10 each side</span></div>
+</div>
+<div class="div"></div>
+<div class="stitle">Bone loading</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">100 skips / small hops × 10 each leg</span></div>
+</div>
+</div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d25')">
+<div class="dleft"><div class="dot dl"></div><div><div class="dname">Sat 14 Jun</div><div class="dsub">Peak long run 🏆</div></div></div>
+<div class="dright"><span class="chip cl">12 km</span><span class="chv" id="cd25">▾</span></div></div>
+<div class="dbody" id="d25">
+<div class="dnote">Longest run before race. Steady conversational effort throughout. Fuel at km 5 + km 8 + km 10. This is your biggest confidence builder for June 28. You CAN do this!</div>
+<div class="runbox">
+<div class="rrow"><span class="rl">Distance</span><span class="rv">12 km</span></div>
+<div class="rrow"><span class="rl">Pace</span><span class="rv">9'05"/km</span></div>
+<div class="mbg"><div class="mfg" style="width:100%;background:#7F77DD;"></div></div>
+<div class="markrow" onclick="mr('m25',this)"><div class="ck" id="m25">✓</div><span>Mark run completed</span></div>
+</div>
+<div class="stitle">Pre-run warmup — 5 min</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Leg swings forward/back × 20 each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip circles × 10 each direction</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Calf raises × 15</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Isometric calf hold 45s each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Walking lunges × 10</span></div>
+</div>
+<div class="div"></div>
+<div class="stitle">Post-run recovery — 8 min</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hamstring stretch 3 × 30s each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip flexor stretch 3 × 30s each side</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Calf stretch against wall 2 × 30s</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Ice behind knees 15 min if any discomfort</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Ankle alphabet × 1 each foot</span></div>
+</div>
+</div></div>
+</div>
+
+<!-- W4: 15–21 Jun -->
+<div class="wpanel" id="w3">
+<div class="wsum"><h2>Week 4 — Sharpen · 15–21 Jun</h2>
+<div class="sgrid">
+<div class="sbox"><div class="snum">25</div><div class="slbl">target km</div></div>
+<div class="sbox"><div class="snum">3</div><div class="slbl">run days</div></div>
+<div class="sbox"><div class="snum">1</div><div class="slbl">strength day</div></div>
+</div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d30')">
+<div class="dleft"><div class="dot dr"></div><div><div class="dname">Sun 15 Jun</div><div class="dsub">Rest</div></div></div>
+<div class="dright"><span class="chip cr">Rest</span><span class="chv" id="cd30">▾</span></div></div>
+<div class="dbody" id="d30"><div class="dnote">Complete rest after peak long run. Sleep, eat, recover.</div></div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d31')">
+<div class="dleft"><div class="dot de"></div><div><div class="dname">Tue 17 Jun</div><div class="dsub">Easy run — taper begins</div></div></div>
+<div class="dright"><span class="chip ce">6 km</span><span class="chv" id="cd31">▾</span></div></div>
+<div class="dbody" id="d31">
+<div class="dnote">Taper begins. Reduce effort — legs should feel fresher. Do not add extra km.</div>
+<div class="runbox">
+<div class="rrow"><span class="rl">Distance</span><span class="rv">6 km</span></div>
+<div class="rrow"><span class="rl">Pace</span><span class="rv">9'00"/km</span></div>
+<div class="mbg"><div class="mfg" style="width:50%;background:#378ADD;"></div></div>
+<div class="markrow" onclick="mr('m31',this)"><div class="ck" id="m31">✓</div><span>Mark run completed</span></div>
+</div>
+<div class="stitle">Pre-run warmup</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Leg swings forward/back × 20 each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip circles × 10 each direction</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Isometric calf hold 45s each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Walking lunges × 10</span></div>
+</div>
+<div class="div"></div>
+<div class="stitle">Post-run recovery</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hamstring stretch 3 × 30s</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip flexor stretch 3 × 30s each</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Calf stretch 2 × 30s</span></div>
+</div>
+</div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d32')">
+<div class="dleft"><div class="dot dt"></div><div><div class="dname">Thu 19 Jun</div><div class="dsub">Race pace sharpener</div></div></div>
+<div class="dright"><span class="chip ct">6 km</span><span class="chv" id="cd32">▾</span></div></div>
+<div class="dbody" id="d32">
+<div class="dnote">10 min warmup → 3 km at exact race pace 8'50"–9'00" → cooldown. Dress rehearsal for June 28.</div>
+<div class="runbox">
+<div class="rrow"><span class="rl">Total distance</span><span class="rv">6 km</span></div>
+<div class="rrow"><span class="rl">Race pace km</span><span class="rv">8'50"–9'00" × 3 km</span></div>
+<div class="mbg"><div class="mfg" style="width:50%;background:#3B6D11;"></div></div>
+<div class="markrow" onclick="mr('m32',this)"><div class="ck" id="m32">✓</div><span>Mark run completed</span></div>
+</div>
+<div class="stitle">Pre-run warmup</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Leg swings forward/back × 20 each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip circles × 10 each direction</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Calf raises × 15</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Isometric calf hold 45s each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Walking lunges × 10</span></div>
+</div>
+<div class="div"></div>
+<div class="stitle">Post-run recovery</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hamstring stretch 3 × 30s</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip flexor stretch 3 × 30s each</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Calf stretch 2 × 30s</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Ice behind knees 15 min if needed</span></div>
+</div>
+</div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d33')">
+<div class="dleft"><div class="dot dl"></div><div><div class="dname">Sat 21 Jun</div><div class="dsub">Last long run</div></div></div>
+<div class="dright"><span class="chip cl">8 km</span><span class="chv" id="cd33">▾</span></div></div>
+<div class="dbody" id="d33">
+<div class="dnote">Easy pace only. Last run over 6 km before race. Just keep legs moving — no pushing at all.</div>
+<div class="runbox">
+<div class="rrow"><span class="rl">Distance</span><span class="rv">8 km</span></div>
+<div class="rrow"><span class="rl">Pace</span><span class="rv">9'00"/km — easy</span></div>
+<div class="mbg"><div class="mfg" style="width:67%;background:#7F77DD;"></div></div>
+<div class="markrow" onclick="mr('m33',this)"><div class="ck" id="m33">✓</div><span>Mark run completed</span></div>
+</div>
+<div class="stitle">Pre-run warmup</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Leg swings × 20 each leg</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip circles × 10 each direction</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Isometric calf hold 45s each leg</span></div>
+</div>
+<div class="div"></div>
+<div class="stitle">Post-run recovery</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hamstring stretch 3 × 30s</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Hip flexor stretch 3 × 30s each</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Calf stretch 2 × 30s</span></div>
+</div>
+</div></div>
+</div>
+
+<!-- W5: 22–27 Jun -->
+<div class="wpanel" id="w4">
+<div class="wsum"><h2>Week 5 — Taper · 22–27 Jun</h2>
+<div class="sgrid">
+<div class="sbox"><div class="snum">14</div><div class="slbl">target km</div></div>
+<div class="sbox"><div class="snum">3</div><div class="slbl">run days</div></div>
+<div class="sbox"><div class="snum">0</div><div class="slbl">strength days</div></div>
+</div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d40')">
+<div class="dleft"><div class="dot dr"></div><div><div class="dname">Sun 22 Jun</div><div class="dsub">Rest</div></div></div>
+<div class="dright"><span class="chip cr">Rest</span><span class="chv" id="cd40">▾</span></div></div>
+<div class="dbody" id="d40"><div class="dnote">Complete rest. Race is 6 days away. Sleep, eat, hydrate well.</div></div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d41')">
+<div class="dleft"><div class="dot de"></div><div><div class="dname">Tue 24 Jun</div><div class="dsub">Shake-out run</div></div></div>
+<div class="dright"><span class="chip ce">4 km</span><span class="chv" id="cd41">▾</span></div></div>
+<div class="dbody" id="d41">
+<div class="dnote">Very easy — legs must feel fresh. Stop immediately if any discomfort.</div>
+<div class="runbox">
+<div class="rrow"><span class="rl">Distance</span><span class="rv">4 km</span></div>
+<div class="rrow"><span class="rl">Pace</span><span class="rv">9'30"/km — very easy</span></div>
+<div class="mbg"><div class="mfg" style="width:33%;background:#378ADD;"></div></div>
+<div class="markrow" onclick="mr('m41',this)"><div class="ck" id="m41">✓</div><span>Mark run completed</span></div>
+</div>
+</div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d42')">
+<div class="dleft"><div class="dot dr"></div><div><div class="dname">Wed 25 Jun</div><div class="dsub">Rest — prep race kit</div></div></div>
+<div class="dright"><span class="chip cr">Rest</span><span class="chv" id="cd42">▾</span></div></div>
+<div class="dbody" id="d42">
+<div class="dnote">Complete rest. Prep ALL race kit tonight.</div>
+<div class="stitle">Race kit checklist</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Race shoes ready and checked</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Moisture-wicking socks laid out</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Race outfit ready — no cotton</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Micropore tape for toes packed</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Vaseline packed</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">6 dates for km 5 fuel packed</span></div>
+</div>
+</div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d43')">
+<div class="dleft"><div class="dot de"></div><div><div class="dname">Thu 26 Jun</div><div class="dsub">Strides run</div></div></div>
+<div class="dright"><span class="chip ce">3 km</span><span class="chv" id="cd43">▾</span></div></div>
+<div class="dbody" id="d43">
+<div class="dnote">3 km easy + 4 × 20 sec gentle strides. Just to feel sharp. Nothing more.</div>
+<div class="runbox">
+<div class="rrow"><span class="rl">Distance</span><span class="rv">3 km + strides</span></div>
+<div class="rrow"><span class="rl">Strides</span><span class="rv">4 × 20 sec gentle acceleration</span></div>
+<div class="mbg"><div class="mfg" style="width:25%;background:#378ADD;"></div></div>
+<div class="markrow" onclick="mr('m43',this)"><div class="ck" id="m43">✓</div><span>Mark run completed</span></div>
+</div>
+</div></div>
+
+<div class="dcard"><div class="dhdr" onclick="tog('d44')">
+<div class="dleft"><div class="dot dr"></div><div><div class="dname">Fri 27 Jun</div><div class="dsub">Race eve — full rest 🙏</div></div></div>
+<div class="dright"><span class="chip cr">Rest</span><span class="chv" id="cd44">▾</span></div></div>
+<div class="dbody" id="d44">
+<div class="dnote">SLEEP BY 10 PM. Carb-load at lunch + dinner. Drink 500 ml extra water. Everything is ready.</div>
+<div class="stitle">Race eve checklist</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Drink 500 ml extra water today</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Carb-load at lunch and dinner (extra roti)</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">All race kit confirmed and laid out</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Alarm set — 90 min before race start</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">IN BED BY 10 PM 🌙</span></div>
+</div>
+</div></div>
+</div>
+
+<!-- RACE DAY -->
+<div class="wpanel" id="w5">
+<div class="wsum" style="background:#fff4ee;border-color:#f5a070;">
+<h2>🏁 Race Day — Sat 28 June 2026</h2>
+<div class="sgrid">
+<div class="sbox"><div class="snum">10</div><div class="slbl">race km</div></div>
+<div class="sbox"><div class="snum">&lt;90</div><div class="slbl">target mins</div></div>
+<div class="sbox"><div class="snum">9'00"</div><div class="slbl">avg pace</div></div>
+</div></div>
+
+<div class="dcard racecard"><div class="dhdr" onclick="tog('d50')">
+<div class="dleft"><div class="dot drc"></div><div><div class="dname">Sat 28 Jun — RACE DAY 🏅</div><div class="dsub">Korum 10K · Sub-90 min</div></div></div>
+<div class="dright"><span class="chip crc">10 km</span><span class="chv" id="cd50">▾</span></div></div>
+<div class="dbody" id="d50">
+<div class="dnote">Start km 1 at 9'30" — deliberately slow. This is the hardest discipline. Build from km 5. Push at km 8–9. Empty the tank at km 9.5. YOU GOT THIS! 💪</div>
+<div class="runbox">
+<div class="rrow"><span class="rl">Distance</span><span class="rv">10 km</span></div>
+<div class="rrow"><span class="rl">Target</span><span class="rv">Sub-90 minutes</span></div>
+<div class="mbg"><div class="mfg" style="width:100%;background:#D85A30;"></div></div>
+<div class="markrow" onclick="mr('m50',this)"><div class="ck" id="m50">✓</div><span>Mark race completed 🏅</span></div>
+</div>
+<div class="stitle">Race morning checklist</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Wake 90 min before race start</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Light breakfast: banana + 2 dates + tea/coffee</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Drink 300 ml water before leaving</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Apply Vaseline — thighs, toes, underarms, bra line</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Tape both big toenails with micropore tape</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Moisture-wicking socks on (not cotton)</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Dates packed for km 5 fuel</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">5 min warmup walk before start gun</span></div>
+</div>
+<div class="div"></div>
+<div class="stitle">Race pacing plan</div>
+<table class="rtbl">
+<tr><th>Split</th><th>Pace</th><th>Strategy</th></tr>
+<tr><td>Km 1</td><td>9'30"</td><td>Hold back — start slow</td></tr>
+<tr><td>Km 2–3</td><td>9'10"</td><td>Settle in, find rhythm</td></tr>
+<tr><td>Km 4–5</td><td>9'00"</td><td>Groove · eat dates at 5</td></tr>
+<tr><td>Km 6–7</td><td>8'50"–9'00"</td><td>Fitness shows now</td></tr>
+<tr><td>Km 8–9</td><td>8'40"–8'50"</td><td>Push — you earned this</td></tr>
+<tr><td>Km 10</td><td>Best effort</td><td>Empty the tank 🏁</td></tr>
+</table>
+<div class="stitle">Monsoon wet road rules</div>
+<div class="exlist">
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Avoid painted road markings — very slippery when wet</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Avoid metal manholes and gratings</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Shorten stride on corners</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Run through puddles — don't swerve</span></div>
+<div class="exrow"><div class="ck" onclick="ck(this)">✓</div><span class="ext" onclick="et(this)">Cool rain = lower HR = faster pace. Enjoy!</span></div>
+</div>
+</div></div>
+</div>
+
+<div class="foot">Mangal · Korum 10K 2026 · Open in Safari → Share → Add to Home Screen 📱</div>
+
+<script>
+(function(){
+  function updateCD(){
+    var d=new Date('2026-06-28'),n=new Date(),diff=Math.ceil((d-n)/86400000),el=document.getElementById('cd');
+    if(el) el.textContent=diff>0?diff+' days to go':diff===0?'RACE DAY TODAY! 🏁':'Race completed! 🏅';
+  }
+  updateCD();
+
+  window.sw=function(idx,btn){
+    var panels=document.querySelectorAll('.wpanel');
+    var btns=document.querySelectorAll('.tbtn');
+    for(var i=0;i<panels.length;i++) panels[i].classList.remove('show');
+    for(var i=0;i<btns.length;i++) btns[i].classList.remove('on');
+    var p=document.getElementById('w'+idx);
+    if(p) p.classList.add('show');
+    if(btn) btn.classList.add('on');
+    window.scrollTo(0,0);
+  };
+
+  window.tog=function(id){
+    var b=document.getElementById(id);
+    var c=document.getElementById('c'+id);
+    if(!b) return;
+    var o=b.classList.contains('open');
+    b.classList.toggle('open',!o);
+    if(c) c.classList.toggle('open',!o);
+  };
+
+  window.ck=function(el){
+    el.classList.toggle('done');
+    var n=el.nextElementSibling;
+    if(n) n.classList.toggle('done',el.classList.contains('done'));
+    save();
+  };
+
+  window.et=function(el){
+    el.classList.toggle('done');
+    var p=el.previousElementSibling;
+    if(p) p.classList.toggle('done',el.classList.contains('done'));
+    save();
+  };
+
+  window.mr=function(id,row){
+    var el=document.getElementById(id);
+    if(!el) return;
+    el.classList.toggle('done');
+    updateProg();
+    save();
+  };
+
+  var runIds=['m02','m03','m11','m13','m15','m22','m23','m25','m31','m32','m33','m41','m43','m50'];
+  var runKms=[6,10,6,7,11,7,7,12,6,6,8,4,3,10];
+
+  function updateProg(){
+    var total=0,done=0;
+    for(var i=0;i<runIds.length;i++){
+      total+=runKms[i];
+      var el=document.getElementById(runIds[i]);
+      if(el&&el.classList.contains('done')) done+=runKms[i];
+    }
+    var pct=total>0?Math.round(done/total*100):0;
+    var fg=document.getElementById('pfg');
+    var pd=document.getElementById('pdone');
+    var pt=document.getElementById('ptot');
+    if(fg) fg.style.width=pct+'%';
+    if(pd) pd.textContent=done+' km logged';
+    if(pt) pt.textContent='of '+total+' km plan';
+  }
+  updateProg();
+
+  function save(){
+    try{
+      var s={};
+      var cks=document.querySelectorAll('.ck');
+      for(var i=0;i<cks.length;i++) s['k'+i]=cks[i].classList.contains('done');
+      var txts=document.querySelectorAll('.ext');
+      for(var i=0;i<txts.length;i++) s['t'+i]=txts[i].classList.contains('done');
+      localStorage.setItem('mangal26',JSON.stringify(s));
+    }catch(e){}
+  }
+
+  function load(){
+    try{
+      var raw=localStorage.getItem('mangal26');
+      if(!raw) return;
+      var s=JSON.parse(raw);
+      var cks=document.querySelectorAll('.ck');
+      for(var i=0;i<cks.length;i++) if(s['k'+i]) cks[i].classList.add('done');
+      var txts=document.querySelectorAll('.ext');
+      for(var i=0;i<txts.length;i++) if(s['t'+i]) txts[i].classList.add('done');
+      updateProg();
+    }catch(e){}
+  }
+  load();
+})();
+</script>
+</body>
+</html>
